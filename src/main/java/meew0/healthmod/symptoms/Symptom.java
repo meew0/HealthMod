@@ -21,6 +21,10 @@ public abstract class Symptom {
     public abstract String getUniqueSymptomID();
     public abstract int getDisplayColor();
 
+    public AmplifiedSymptom instantiate(int amplifier) {
+        return new AmplifiedSymptom(this, amplifier);
+    }
+
     public boolean shouldSymptomRunOut(EntityPlayer entity, int amplifier) {
         // By default, only let a symptom run out if the player still has it according to its disease profile
         // Subclasses can overwrite this method if they want lingering symptoms

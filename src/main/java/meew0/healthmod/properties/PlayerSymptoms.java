@@ -18,7 +18,7 @@ public class PlayerSymptoms implements IExtendedEntityProperties {
     public static final String propertyName = "HealthMod_playerSymptoms";
 
     private final EntityPlayer player;
-    private List<Symptom> symptoms;
+    public List<Symptom> symptoms;
 
     public PlayerSymptoms(EntityPlayer player) {
         this.player = player;
