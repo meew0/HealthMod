@@ -1,12 +1,10 @@
 package meew0.healthmod;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import meew0.healthmod.client.GuiSymptomOverlay;
-import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import meew0.healthmod.client.GuiSymptomOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
 
@@ -45,12 +43,5 @@ public class HealthMod
         FMLCommonHandler.instance().bus().register(eventHandler);
 
         MinecraftForge.EVENT_BUS.register(new GuiSymptomOverlay());
-    }
-
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-		// some Health code
-        System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
     }
 }
