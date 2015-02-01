@@ -1,5 +1,6 @@
-package meew0.healthmod.diseases;
+package meew0.healthmod.properties;
 
+import meew0.healthmod.diseases.Disease;
 import meew0.healthmod.symptoms.Symptom;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
