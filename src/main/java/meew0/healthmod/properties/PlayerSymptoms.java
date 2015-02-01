@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,20 @@ public class PlayerSymptoms implements IExtendedEntityProperties {
     @Override
     public void saveNBTData(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList();
-        //TODO
+        for(AmplifiedSymptom as : symptoms) {
+            list.appendTag(as.serializeToNBT());
+        }
+        compound.setTag("Symptoms", list);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
-
+        this.symptoms = new ArrayList<AmplifiedSymptom>();
+        NBTTagList list = compound.getTagList("Symptoms", Constants.NBT.TAG_COMPOUND);
+        for(int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            symptoms.add(new AmplifiedSymptom(tag));
+        }
     }
 
     @Override
