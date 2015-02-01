@@ -1,5 +1,6 @@
 package meew0.healthmod.properties;
 
+import meew0.healthmod.symptoms.AmplifiedSymptom;
 import meew0.healthmod.symptoms.Symptom;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,10 +19,11 @@ public class PlayerSymptoms implements IExtendedEntityProperties {
     public static final String propertyName = "HealthMod_playerSymptoms";
 
     private final EntityPlayer player;
-    public List<Symptom> symptoms;
+    public List<AmplifiedSymptom> symptoms;
 
     public PlayerSymptoms(EntityPlayer player) {
         this.player = player;
+        this.symptoms = new ArrayList<AmplifiedSymptom>();
     }
 
     public static void addToPlayer(EntityPlayer player) {
@@ -49,6 +51,5 @@ public class PlayerSymptoms implements IExtendedEntityProperties {
 
     @Override
     public void init(Entity entity, World world) {
-        this.symptoms = new ArrayList<Symptom>();
     }
 }

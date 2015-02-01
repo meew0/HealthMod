@@ -1,10 +1,13 @@
 package meew0.healthmod;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import meew0.healthmod.client.GuiSymptomOverlay;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = HealthMod.MODID, version = HealthMod.VERSION)
@@ -15,6 +18,8 @@ public class HealthMod
 
     public static Logger modLog;
     public static boolean debugMode;
+
+    public static final HealthModEventHandler eventHandler = new HealthModEventHandler();
 
     public static void debug(String msg) {
         if(debugMode) modLog.info("[DEBUG] " + msg);
@@ -35,6 +40,11 @@ public class HealthMod
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         modLog = event.getModLog();
+
+        MinecraftForge.EVENT_BUS.register(eventHandler);
+        FMLCommonHandler.instance().bus().register(eventHandler);
+
+        MinecraftForge.EVENT_BUS.register(new GuiSymptomOverlay());
     }
 
     @EventHandler
