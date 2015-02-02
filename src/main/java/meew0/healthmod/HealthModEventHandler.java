@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import meew0.healthmod.properties.PlayerSymptoms;
 import meew0.healthmod.symptoms.AmplifiedSymptom;
+import meew0.healthmod.symptoms.SymptomFever;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityEvent;
 
@@ -24,6 +25,8 @@ public class HealthModEventHandler {
     public void onEntityConstructing(EntityEvent.EntityConstructing event) {
         if(event.entity instanceof EntityPlayer && PlayerSymptoms.getForPlayer((EntityPlayer) event.entity) == null) {
             PlayerSymptoms.addToPlayer((EntityPlayer) event.entity);
+
+            PlayerSymptoms.getForPlayer((EntityPlayer) event.entity).addSymptom(new SymptomFever().instantiate(0));
         }
     }
 }

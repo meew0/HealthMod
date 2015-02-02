@@ -35,6 +35,10 @@ public class PlayerSymptoms implements IExtendedEntityProperties {
         return (PlayerSymptoms) player.getExtendedProperties(propertyName);
     }
 
+    public void addSymptom(AmplifiedSymptom s) {
+        symptoms.add(s);
+    }
+
     public void removeSymptom(Symptom s) {
         //TODO
     }
