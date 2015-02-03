@@ -15,7 +15,7 @@ public class HealthMod
     public static final String VERSION = "1.0";
 
     public static Logger modLog;
-    public static boolean debugMode;
+    public static boolean debugMode = true;
 
     public static final HealthModEventHandler eventHandler = new HealthModEventHandler();
 

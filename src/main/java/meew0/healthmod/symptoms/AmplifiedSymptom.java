@@ -1,7 +1,9 @@
 package meew0.healthmod.symptoms;
 
+import meew0.healthmod.client.GuiSymptomOverlay;
 import meew0.healthmod.registry.SymptomRegistry;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 /**
  * Created by meew0 on 01.02.15.
@@ -25,5 +27,11 @@ public class AmplifiedSymptom {
         nbt.setInteger("Amplifier", amplifier);
         nbt.setString("SymptomUID", symptom.getUniqueSymptomID());
         return nbt;
+    }
+
+    public String getFullName() {
+        String unlocalized = symptom.getUnlocalizedName();
+        String localized = StatCollector.translateToLocal(unlocalized);
+        return localized.replace("%n", GuiSymptomOverlay.getRomanNumeral(amplifier));
     }
 }

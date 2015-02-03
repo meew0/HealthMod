@@ -21,6 +21,10 @@ public abstract class Symptom {
     public abstract String getUniqueSymptomID();
     public abstract int getDisplayColor();
 
+    public String getUnlocalizedName() {
+        return "healthmod.symptoms." + getUniqueSymptomID();
+    }
+
     public AmplifiedSymptom instantiate(int amplifier) {
         return new AmplifiedSymptom(this, amplifier);
     }
