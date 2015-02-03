@@ -119,7 +119,7 @@ public class GuiSymptomOverlay extends Gui {
         int screenX = event.resolution.getScaledWidth() - symptomBoxWidth - symptomBoxPadding;
         for(AmplifiedSymptom as : symptoms) {
             this.drawGradientRect(screenX, screenY, screenX + symptomBoxWidth, screenY + symptomBoxHeight, as.symptom.getDisplayColor(), as.symptom.getDisplayColor());
-            this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(), screenX, screenY, 0);
+            this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(), screenX, screenY, as.symptom.getDisplayColor());
         }
 
     }
