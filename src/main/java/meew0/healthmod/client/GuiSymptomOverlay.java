@@ -5,6 +5,7 @@ import meew0.healthmod.properties.PlayerSymptoms;
 import meew0.healthmod.symptoms.AmplifiedSymptom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by meew0 on 01.02.15.
  */
 public class GuiSymptomOverlay extends Gui {
+    public static IIcon symptomOverlay;
 
     public static String getRomanNumeral(int num) {
         if (num >= 1000) return "M+";
@@ -109,6 +111,7 @@ public class GuiSymptomOverlay extends Gui {
     private static final int symptomBoxHeight = 12;
     private static final int symptomBoxWidth = 100;
     private static final int symptomBoxPadding = 2;
+    private static final int z = -150;
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
@@ -117,8 +120,9 @@ public class GuiSymptomOverlay extends Gui {
         int totalHeight = symptoms.size() * (symptomBoxHeight + symptomBoxPadding);
         int screenY = event.resolution.getScaledHeight() / 2 - totalHeight / 2;
         int screenX = event.resolution.getScaledWidth() - symptomBoxWidth - symptomBoxPadding;
+        //Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("healthmod:textures/overlay_symptom.png"));
         for(AmplifiedSymptom as : symptoms) {
-            this.drawGradientRect(screenX, screenY, screenX + symptomBoxWidth, screenY + symptomBoxHeight, as.symptom.getDisplayColor(), as.symptom.getDisplayColor());
+            this.drawTexturedModelRectFromIcon(screenX, screenY, symptomOverlay, symptomOverlay.getIconWidth(), symptomOverlay.getIconHeight());
             this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(), screenX, screenY, as.symptom.getDisplayColor());
         }
 
