@@ -5,7 +5,9 @@ import meew0.healthmod.properties.PlayerSymptoms;
 import meew0.healthmod.symptoms.AmplifiedSymptom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.List;
@@ -111,7 +113,19 @@ public class GuiSymptomOverlay extends Gui {
     private static final int symptomBoxHeight = 12;
     private static final int symptomBoxWidth = 100;
     private static final int symptomBoxPadding = 2;
-    private static final int z = -150;
+
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int tWidth, int tHeight)
+    {
+        float f = 0.00390625F;
+        float f1 = 0.00390625F;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + height), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + tHeight) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y + height), (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v + tHeight) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y + 0), (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v + 0) * f1));
+        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + 0) * f1));
+        tessellator.draw();
+    }
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
@@ -121,8 +135,10 @@ public class GuiSymptomOverlay extends Gui {
         int screenY = event.resolution.getScaledHeight() / 2 - totalHeight / 2;
         int screenX = event.resolution.getScaledWidth() - symptomBoxWidth - symptomBoxPadding;
         //Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("healthmod:textures/overlay_symptom.png"));
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/items.png"));
         for(AmplifiedSymptom as : symptoms) {
-            this.drawTexturedModelRectFromIcon(screenX, screenY, symptomOverlay, symptomOverlay.getIconWidth(), symptomOverlay.getIconHeight());
+            this.drawTexturedModalRect(screenX, screenY,
+                    (int) symptomOverlay.getMinU(), (int) symptomOverlay.getMinV(), symptomBoxWidth, symptomBoxHeight, 50, symptomBoxHeight);
             this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(), screenX, screenY, as.symptom.getDisplayColor());
         }
 
