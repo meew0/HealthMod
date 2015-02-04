@@ -14,6 +14,19 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class PlayerDiseases implements IExtendedEntityProperties {
     public static final String propertyName = "HealthMod_playerDiseases";
 
+    private final EntityPlayer player;
+
+    public PlayerDiseases(EntityPlayer player) {
+        this.player = player;
+    }
+
+    public static void addToPlayer(EntityPlayer player) {
+        player.registerExtendedProperties(propertyName, new PlayerDiseases(player));
+    }
+
+    public static PlayerDiseases getForPlayer(EntityPlayer player) {
+        return (PlayerDiseases) player.getExtendedProperties(propertyName);
+    }
 
     public static boolean doesPlayerHaveSymptom(EntityPlayer player, Symptom s) {
         return true; //TODO

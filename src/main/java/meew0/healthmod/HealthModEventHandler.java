@@ -3,6 +3,8 @@ package meew0.healthmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import meew0.healthmod.client.GuiSymptomOverlay;
+import meew0.healthmod.properties.PlayerBodyProperties;
+import meew0.healthmod.properties.PlayerDiseases;
 import meew0.healthmod.properties.PlayerSymptoms;
 import meew0.healthmod.symptoms.AmplifiedSymptom;
 import meew0.healthmod.symptoms.SymptomFever;
@@ -26,11 +28,23 @@ public class HealthModEventHandler {
 
     @SubscribeEvent
     public void onEntityConstructing(EntityEvent.EntityConstructing event) {
-        if(event.entity instanceof EntityPlayer && PlayerSymptoms.getForPlayer((EntityPlayer) event.entity) == null) {
-            PlayerSymptoms.addToPlayer((EntityPlayer) event.entity);
+        if(event.entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.entity;
+            if(PlayerSymptoms.getForPlayer(player) == null) {
+                PlayerSymptoms.addToPlayer(player);
 
-            PlayerSymptoms.getForPlayer((EntityPlayer) event.entity).addSymptom(new SymptomFever().instantiate(0));
-            PlayerSymptoms.getForPlayer((EntityPlayer) event.entity).addSymptom(new SymptomNausea().instantiate(2));
+                HealthMod.debug("Adding symptoms");
+                PlayerSymptoms.getForPlayer(player).addSymptom(new SymptomFever().instantiate(0));
+                PlayerSymptoms.getForPlayer(player).addSymptom(new SymptomNausea().instantiate(2));
+            }
+
+            if(PlayerBodyProperties.getForPlayer(player) == null) {
+                PlayerBodyProperties.addToPlayer(player);
+            }
+
+            if(PlayerDiseases.getForPlayer(player) == null) {
+                PlayerDiseases.addToPlayer(player);
+            }
         }
     }
 

@@ -11,7 +11,7 @@ public class SymptomNausea extends SymptomPotionEffect {
 
     @Override
     public PotionEffect getPotionEffect(EntityPlayer player, int amplifier) {
-        return new PotionEffect(Potion.confusion.getId(), 1, amplifier);
+        return new PotionEffect(Potion.confusion.getId(), 200, amplifier);
     }
 
     @Override

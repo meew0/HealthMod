@@ -32,6 +32,8 @@ public class AmplifiedSymptom {
     public String getFullName() {
         String unlocalized = symptom.getUnlocalizedName();
         String localized = StatCollector.translateToLocal(unlocalized);
-        return localized.replace("%n", GuiSymptomOverlay.getRomanNumeral(amplifier));
+
+        int amplifierForDisplay = (amplifier > 0) ? amplifier + 1 : 0;
+        return localized.replace("%n", GuiSymptomOverlay.getRomanNumeral(amplifierForDisplay));
     }
 }
