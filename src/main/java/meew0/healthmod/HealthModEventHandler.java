@@ -6,6 +6,7 @@ import meew0.healthmod.client.GuiSymptomOverlay;
 import meew0.healthmod.properties.PlayerSymptoms;
 import meew0.healthmod.symptoms.AmplifiedSymptom;
 import meew0.healthmod.symptoms.SymptomFever;
+import meew0.healthmod.symptoms.SymptomNausea;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -29,6 +30,7 @@ public class HealthModEventHandler {
             PlayerSymptoms.addToPlayer((EntityPlayer) event.entity);
 
             PlayerSymptoms.getForPlayer((EntityPlayer) event.entity).addSymptom(new SymptomFever().instantiate(0));
+            PlayerSymptoms.getForPlayer((EntityPlayer) event.entity).addSymptom(new SymptomNausea().instantiate(2));
         }
     }
 
