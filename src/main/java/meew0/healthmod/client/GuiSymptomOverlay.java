@@ -110,10 +110,10 @@ public class GuiSymptomOverlay extends Gui {
         return ret;
     }
 
-    private static final int symptomBoxHeight = 12;
-    private static final int symptomBoxWidth = 100;
+    private static final int symptomBoxHeight = 16;
+    private static final int symptomBoxWidth = 72;
     private static final int symptomBoxPadding = 2;
-    private static final int symptomBoxTextOffset = 2;
+    private static final int symptomBoxTextOffset = 4;
 
     public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int tWidth, int tHeight)
     {
@@ -143,9 +143,9 @@ public class GuiSymptomOverlay extends Gui {
         for(AmplifiedSymptom as : symptoms) {
             this.drawTexturedModalRect(screenX, screenY,
                     (int) symptomOverlay.getMinU(), (int) symptomOverlay.getMinV(),
-                    symptomBoxWidth, symptomBoxHeight, 50, symptomBoxHeight);
+                    symptomBoxWidth, symptomBoxHeight, symptomBoxWidth/2, symptomBoxHeight);
             this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(),
-                    screenX + symptomBoxTextOffset, screenY + symptomBoxTextOffset, as.symptom.getDisplayColor());
+                    screenX + symptomBoxTextOffset, screenY + symptomBoxTextOffset , as.symptom.getDisplayColor());
         }
 
     }
