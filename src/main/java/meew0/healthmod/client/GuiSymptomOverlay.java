@@ -120,10 +120,14 @@ public class GuiSymptomOverlay extends Gui {
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + height), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + tHeight) * f1));
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + height), (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v + tHeight) * f1));
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + 0), (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v + 0) * f1));
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)this.zLevel, (double)((float)(u + 0) * f), (double)((float)(v + 0) * f1));
+        tessellator.addVertexWithUV((double)(x), (double)(y + height),
+                (double)this.zLevel, (double)((float)(u) * f), (double)((float)(v + tHeight) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y + height),
+                (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v + tHeight) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y),
+                (double)this.zLevel, (double)((float)(u + tWidth) * f), (double)((float)(v) * f1));
+        tessellator.addVertexWithUV((double)(x), (double)(y),
+                (double)this.zLevel, (double)((float)(u) * f), (double)((float)(v) * f1));
         tessellator.draw();
     }
 
@@ -134,7 +138,6 @@ public class GuiSymptomOverlay extends Gui {
         int totalHeight = symptoms.size() * (symptomBoxHeight + symptomBoxPadding);
         int screenY = event.resolution.getScaledHeight() / 2 - totalHeight / 2;
         int screenX = event.resolution.getScaledWidth() - symptomBoxWidth - symptomBoxPadding;
-        //Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("healthmod:textures/overlay_symptom.png"));
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/items.png"));
         for(AmplifiedSymptom as : symptoms) {
             this.drawTexturedModalRect(screenX, screenY,
