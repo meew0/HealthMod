@@ -115,12 +115,13 @@ public class GuiSymptomOverlay extends Gui {
     private static final int symptomBoxPadding = 2;
     private static final int symptomBoxTextOffset = 4;
 
-    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int tWidth, int tHeight)
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int tWidth, int tHeight, int color)
     {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(color);
         tessellator.addVertexWithUV((double)(x), (double)(y + height),
                 (double)this.zLevel, (double)((float)(u) * f), (double)((float)(v + tHeight) * f1));
         tessellator.addVertexWithUV((double)(x + width), (double)(y + height),
@@ -143,7 +144,7 @@ public class GuiSymptomOverlay extends Gui {
         for(AmplifiedSymptom as : symptoms) {
             this.drawTexturedModalRect(screenX, screenY,
                     (int) symptomOverlay.getMinU(), (int) symptomOverlay.getMinV(),
-                    symptomBoxWidth, symptomBoxHeight, symptomBoxWidth/2, symptomBoxHeight);
+                    symptomBoxWidth, symptomBoxHeight, symptomBoxWidth/2, symptomBoxHeight, as.symptom.getDisplayColor());
             this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(),
                     screenX + symptomBoxTextOffset, screenY + symptomBoxTextOffset , as.symptom.getDisplayColor());
         }
