@@ -140,13 +140,15 @@ public class GuiSymptomOverlay extends Gui {
         int totalHeight = symptoms.size() * (symptomBoxHeight + symptomBoxPadding);
         int screenY = event.resolution.getScaledHeight() / 2 - totalHeight / 2;
         int screenX = event.resolution.getScaledWidth() - symptomBoxWidth - symptomBoxPadding;
-        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/items.png"));
         for(AmplifiedSymptom as : symptoms) {
+            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/items.png"));
             this.drawTexturedModalRect(screenX, screenY,
                     (int) symptomOverlay.getMinU(), (int) symptomOverlay.getMinV(),
                     symptomBoxWidth, symptomBoxHeight, symptomBoxWidth/2, symptomBoxHeight, as.symptom.getDisplayColor());
             this.drawString(Minecraft.getMinecraft().fontRenderer, as.getFullName(),
                     screenX + symptomBoxTextOffset, screenY + symptomBoxTextOffset , as.symptom.getDisplayColor());
+
+            screenY += (symptomBoxHeight + symptomBoxPadding);
         }
 
     }
