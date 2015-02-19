@@ -1,0 +1,69 @@
+# %n = amplifier (Roman numerals)
+healthmod.symptoms.Fever=Fièvre %n
+healthmod.symptoms.Nausea=Nausée %n
+
+# %t = formatted temperature using formatting codes below
+healthmod.msg.bodyTemperature=§7Température actuelle : %t
+
+# %n = Temperature in °C
+# %u = Unit of temperature
+# 36.9°C to 37.5°C
+healthmod.msg.bodyTemperature.formattingIdeal=§a%n %u
+# 36.5°C to 36.9°C, 37.5°C to 38.0°C
+healthmod.msg.bodyTemperature.formattingNotIdeal=§8%n %u
+# 35.5°C to 36.5°C, 38.0°C to 39.5°C
+healthmod.msg.bodyTemperature.formattingBad=§c%n %u
+# Less than 35.5°C, greater than 39.5°C
+healthmod.msg.bodyTemperature.formattingSuperBad=§4%n %u
+
+# Abbreviations of temperature units
+healthmod.msg.bodyTemperature.unit0.abbr=°C
+healthmod.msg.bodyTemperature.unit1.abbr=K
+healthmod.msg.bodyTemperature.unit2.abbr=°F
+healthmod.msg.bodyTemperature.unit3.abbr=°Ra
+healthmod.msg.bodyTemperature.unit4.abbr=°D
+healthmod.msg.bodyTemperature.unit5.abbr=°N
+healthmod.msg.bodyTemperature.unit6.abbr=°Ré
+healthmod.msg.bodyTemperature.unit7.abbr=°Rø
+
+# Full names of temperature units
+healthmod.msg.bodyTemperature.unit0.full=Celsius
+healthmod.msg.bodyTemperature.unit1.full=Kelvin
+healthmod.msg.bodyTemperature.unit2.full=Fahrenheit
+healthmod.msg.bodyTemperature.unit3.full=Rankine
+healthmod.msg.bodyTemperature.unit4.full=Delisle
+healthmod.msg.bodyTemperature.unit5.full=Newton
+healthmod.msg.bodyTemperature.unit6.full=Réaumur
+healthmod.msg.bodyTemperature.unit7.full=Rømer
+
+# %u = Full name of temperature unit, %a = Abbreviation of unit
+healthmod.msg.bodyTemperature.unitSwitched=§7Votre unité de température a été changé en §b%u (%a)§7.
+
+# %d = Formatted degradation (see below)
+healthmod.msg.bodyTemperature.degradation=§7Dégradation : %d
+# %a = Inaccuracy
+healthmod.msg.bodyTemperature.accuracy=§7Inexactitude : ±%a
+# %u = Full name of temperature unit, %a = Abbreviation of unit
+healthmod.msg.bodyTemperature.currentUnit=§7Unité actuelle : §b%u (%a)
+
+healthmod.msg.bodyTemperature.usage.0=Clique-droit pour mesure la température corporelle
+healthmod.msg.bodyTemperature.usage.1=Maj-Clique-droit pour changer d'unité
+
+healthmod.item.thermometer.0.name=Thermomètre intraveineux
+healthmod.item.thermometer.1.name=Thermomètre oral
+healthmod.item.thermometer.2.name=Thermomètre rectal
+
+# Formatted degradations
+healthmod.degradation.0=§l§2Sain
+healthmod.degradation.1=§2Sain
+healthmod.degradation.2=§aSain
+healthmod.degradation.3=§7Légèrement sale
+healthmod.degradation.4=§8Légèrement sale
+healthmod.degradation.5=§0Sale
+healthmod.degradation.6=§l§0Sale
+healthmod.degradation.7=§eDégoûtant
+healthmod.degradation.8=§6Dégoûtant
+healthmod.degradation.9=§cContaminé
+healthmod.degradation.10=§4Contaminé
+# > 10
+healthmod.degradation.greater=§l§4Infecté
