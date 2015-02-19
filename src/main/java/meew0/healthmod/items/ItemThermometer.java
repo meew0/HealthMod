@@ -1,12 +1,15 @@
 package meew0.healthmod.items;
 
 import meew0.healthmod.properties.PlayerBodyProperties;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -18,10 +21,9 @@ import java.util.function.Function;
  * Created by meew0 on 05.02.15.
  */
 public class ItemThermometer extends Item {
-    private static String[] textures = new String[] { "healthmod:thermometer_blood", "healthmod:thermometer_aural",
-                                    "healthmod:thermometer_rectal" },
-                            unlocalizedTypeNames = new String[] { "healthmod.msg.thermometerBlood",
-                                    "healthmod.msg.thermometerAural", "healthmod.msg.thermometerRectal"};
+    private static String[] textureNames = new String[] { "healthmod:thermometer_blood", "healthmod:thermometer_aural",
+                                    "healthmod:thermometer_rectal" };
+    private static IIcon[] textures = new IIcon[textureNames.length];
 
     private static List<Function<Float, Float>> degradationFuncs = new ArrayList<>(), accuracyFuncs = new ArrayList<>(),
                                                 conversionFuncs = new ArrayList<>(),
@@ -172,5 +174,29 @@ public class ItemThermometer extends Item {
                     round2d(modifiedTemperature), preferredUnit));
         }
         return true;
+    }
+
+    @Override
+    public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
+        list.add(new ItemStack(item, 1, 2));
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return "healthmod.item.thermometer." + stack.getItemDamage() + ".name";
+    }
+
+    @Override
+    public void registerIcons(IIconRegister iconRegister) {
+        for(int i = 0; i < textureNames.length; i++) {
+            textures[i] = iconRegister.registerIcon(textureNames[i]);
+        }
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int meta) {
+        return textures[meta];
     }
 }

@@ -49,6 +49,10 @@ healthmod.msg.bodyTemperature.currentUnit=§7Current unit: §b%u (%a)
 healthmod.msg.bodyTemperature.usage.0=R-Click to measure body temperature
 healthmod.msg.bodyTemperature.usage.1=Shift-R-Click to cycle through units
 
+healthmod.item.thermometer.0.name=Intravenous Thermometer
+healthmod.item.thermometer.1.name=Aural Thermometer
+healthmod.item.thermometer.2.name=Rectal Thermometer
+
 # Formatted degradations
 healthmod.degradation.0=§l§2Clean
 healthmod.degradation.1=§2Clean
