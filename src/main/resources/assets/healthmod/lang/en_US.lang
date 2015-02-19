@@ -36,5 +36,30 @@ healthmod.msg.bodyTemperature.unit5.full=Newton
 healthmod.msg.bodyTemperature.unit6.full=Réaumur
 healthmod.msg.bodyTemperature.unit7.full=Rømer
 
-# %u = Full name of temperature unit
-healthmod.msg.bodyTemperature.unitSwitched=§7Your unit of temperature has been switched to §b%u§7.
+# %u = Full name of temperature unit, %a = Abbreviation of unit
+healthmod.msg.bodyTemperature.unitSwitched=§7Your unit of temperature has been switched to §b%u (%a)§7.
+
+# %d = Formatted degradation (see below)
+healthmod.msg.bodyTemperature.degradation=§7Degradation: %d
+# %a = Inaccuracy
+healthmod.msg.bodyTemperature.accuracy=§7Inaccuracy: ±%a
+# %u = Full name of temperature unit, %a = Abbreviation of unit
+healthmod.msg.bodyTemperature.currentUnit=§7Current unit: §b%u (%a)
+
+healthmod.msg.bodyTemperature.usage.0=R-Click to measure body temperature
+healthmod.msg.bodyTemperature.usage.1=Shift-R-Click to cycle through units
+
+# Formatted degradations
+healthmod.degradation.0=§l§2Clean
+healthmod.degradation.1=§2Clean
+healthmod.degradation.2=§aClean
+healthmod.degradation.3=§7Slightly Dirty
+healthmod.degradation.4=§8Slightly Dirty
+healthmod.degradation.5=§0Dirty
+healthmod.degradation.6=§l§0Dirty
+healthmod.degradation.7=§eFilthy
+healthmod.degradation.8=§6Filthy
+healthmod.degradation.9=§cContaminated
+healthmod.degradation.10=§4Contaminated
+# > 10
+healthmod.degradation.greater=§l§4Infected

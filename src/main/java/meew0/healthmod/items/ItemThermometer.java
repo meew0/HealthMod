@@ -1,13 +1,11 @@
 package meew0.healthmod.items;
 
 import meew0.healthmod.properties.PlayerBodyProperties;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -25,15 +23,9 @@ public class ItemThermometer extends Item {
                             unlocalizedTypeNames = new String[] { "healthmod.msg.thermometerBlood",
                                     "healthmod.msg.thermometerAural", "healthmod.msg.thermometerRectal"};
 
-    private static final float degradationClean = 0.f;
-    private static final float degradationSlightlyDirty = 3.f;
-    private static final float degradationDirty = 4.f;
-    private static final float degradationFilthy = 5.f;
-    private static final float degradationContaminated = 7.f;
-    private static final float degradationInfected = 10.f;
-
     private static List<Function<Float, Float>> degradationFuncs = new ArrayList<>(), accuracyFuncs = new ArrayList<>(),
-                                                conversionFuncs = new ArrayList<>();
+                                                conversionFuncs = new ArrayList<>(),
+                                                deltaConversionFuncs = new ArrayList<>();
 
     static {
         degradationFuncs.add(/* Blood  */ old -> 0.f);
@@ -52,12 +44,28 @@ public class ItemThermometer extends Item {
         conversionFuncs.add(/* K to °N  */ deg -> (deg - 273.15f) * (33.f/100.f));
         conversionFuncs.add(/* K to °Ré */ deg -> (deg - 273.15f) * (4.f/5.f));
         conversionFuncs.add(/* K to °Rø */ deg -> (deg - 273.15f) * (21.f/40.f) + 7.5f);
+
+        deltaConversionFuncs.add(/* K to °C  */ deg -> deg);
+        deltaConversionFuncs.add(/* K to K   */ deg -> deg);
+        deltaConversionFuncs.add(/* K to °F  */ deg -> deg * (9.f/5.f));
+        deltaConversionFuncs.add(/* K to °Ra */ deg -> deg * (9.f/5.f));
+        deltaConversionFuncs.add(/* K to °D  */ deg -> deg * (3.f/2.f));
+        deltaConversionFuncs.add(/* K to °N  */ deg -> deg * (33.f/100.f));
+        deltaConversionFuncs.add(/* K to °Ré */ deg -> deg * (4.f/5.f));
+        deltaConversionFuncs.add(/* K to °Rø */ deg -> deg * (21.f/40.f));
     }
 
 
     public ItemThermometer() {
         super();
         this.setHasSubtypes(true);
+    }
+
+    /**
+     * Round something to two decimal places
+     */
+    private static float round2d(float f) {
+        return ((float) Math.round(f*100.f))/100.f;
     }
 
     @Override
@@ -90,31 +98,79 @@ public class ItemThermometer extends Item {
     }
 
     @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List information, boolean advancedTooltips) {
+        float degradation = stack.stackTagCompound.getFloat("Degradation");
+        int roundedDegradation = (int) Math.floor(degradation);
+        String formattedDegradation = StatCollector.translateToLocal("healthmod.degradation." + roundedDegradation);
+        String degradationMsg = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.degradation")
+                .replace("%d", formattedDegradation);
+
+        float accuracy = round2d(accuracyFuncs.get(stack.getItemDamage()).apply(degradation));
+        String accuracyMsg = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.accuracy")
+                .replace("%a", "" + accuracy);
+
+        int unit = stack.stackTagCompound.getInteger("PreferredUnit");
+        String unitFull = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unit" + unit +
+                ".full"), unitAbbr = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unit" +
+                unit + ".abbr");
+
+        String unitMsg = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.currentUnit")
+                .replace("%u", unitFull).replace("%a", unitAbbr);
+
+        String usage0 = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.usage.0"),
+                usage1 = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.usage.1");
+
+        information.add(degradationMsg);
+        information.add(accuracyMsg);
+        information.add(unitMsg);
+        information.add("");
+        information.add(usage0);
+        information.add(usage1);
+    }
+
+    @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
                              int side, float dx, float dy, float dz) {
-        // Degrade
-        float oldDegradation = stack.stackTagCompound.getFloat("Degradation");
-        float newDegradation = degradationFuncs.get(stack.getItemDamage()).apply(oldDegradation);
-        stack.stackTagCompound.setFloat("Degradation", newDegradation);
+        if(player.isSneaking()) {
+            // Cycle through units
+            int currentUnit = stack.stackTagCompound.getInteger("PreferredUnit");
+            int newUnit = (currentUnit + 1) % 8;
+            stack.stackTagCompound.setInteger("PreferredUnit", newUnit);
 
-        // Get temperature
-        float temperature = PlayerBodyProperties.getForPlayer(player).bodyTemperature;
+            // Output to chat
+            String newUnitFull = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unit" + newUnit +
+                    ".full"), newUnitAbbr = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unit" +
+                    newUnit + ".abbr");
 
-        // Get accuracy
-        // Use old degradation to degrade item as it should technically degrade after item is used
-        float accuracy = accuracyFuncs.get(stack.getItemDamage()).apply(oldDegradation);
-        // Get random modifier ranging from -accuracy to +accuracy
-        float accuracyBasedModifier = Math.round(itemRand.nextFloat() * 2.f * accuracy) - accuracy;
-        // Round ABM to two decimal places
-        float roundedABM = ((float) Math.round(accuracyBasedModifier * 100.f)) / 100.f;
-        // Apply to temperature
-        float modifiedTemperature = temperature + accuracyBasedModifier;
+            String msg = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unitSwitched")
+                    .replace("%u", newUnitFull).replace("%a", newUnitAbbr);
 
-        // Convert to preferred unit
-        int preferredUnit = stack.stackTagCompound.getInteger("PreferredUnit");
-        float convertedTemperature = conversionFuncs.get(preferredUnit).apply(modifiedTemperature);
+            player.addChatComponentMessage(new ChatComponentText(msg));
+        } else {
+            // Degrade
+            float oldDegradation = stack.stackTagCompound.getFloat("Degradation");
+            float newDegradation = degradationFuncs.get(stack.getItemDamage()).apply(oldDegradation);
+            stack.stackTagCompound.setFloat("Degradation", newDegradation);
 
-        // Output to chat
-        player.addChatComponentMessage(new ChatComponentText());
+            // Get temperature
+            float temperature = PlayerBodyProperties.getForPlayer(player).bodyTemperature;
+
+            // Get accuracy
+            // Use old degradation to degrade item as it should technically degrade after item is used
+            float accuracy = accuracyFuncs.get(stack.getItemDamage()).apply(oldDegradation);
+            // Get random modifier ranging from -accuracy to +accuracy
+            float accuracyBasedModifier = (itemRand.nextFloat() * 2.f * accuracy) - accuracy;
+            // Apply to temperature
+            float modifiedTemperature = temperature + accuracyBasedModifier;
+
+            // Convert to preferred unit
+            int preferredUnit = stack.stackTagCompound.getInteger("PreferredUnit");
+            float convertedTemperature = conversionFuncs.get(preferredUnit).apply(modifiedTemperature);
+
+            // Output to chat
+            player.addChatComponentMessage(formatBodyTemperature(round2d(convertedTemperature),
+                    round2d(modifiedTemperature), preferredUnit));
+        }
+        return true;
     }
 }
