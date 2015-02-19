@@ -13,7 +13,7 @@ public class PlayerBodyProperties implements IExtendedEntityProperties {
     public static final String propertyName = "HealthMod_playerBodyProperties";
 
     private final EntityPlayer player;
-    public float bodyTemperature = 37.3f;
+    public float bodyTemperature = 310.45f; //Kelvin
 
     public PlayerBodyProperties(EntityPlayer player) {
         this.player = player;
