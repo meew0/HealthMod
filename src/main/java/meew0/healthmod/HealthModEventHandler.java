@@ -19,10 +19,13 @@ import net.minecraftforge.event.entity.EntityEvent;
 public class HealthModEventHandler {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        PlayerSymptoms symptoms = PlayerSymptoms.getForPlayer(event.player);
-        if(symptoms == null) return;
-        for(AmplifiedSymptom s : symptoms.symptoms) {
-            s.symptom.performSymptomEffect(event.player, s.amplifier);
+        // Only perform the effect in survival/adventure mode
+        if(!event.player.capabilities.isCreativeMode) {
+            PlayerSymptoms symptoms = PlayerSymptoms.getForPlayer(event.player);
+            if (symptoms == null) return;
+            for (AmplifiedSymptom s : symptoms.symptoms) {
+                s.symptom.performSymptomEffect(event.player, s.amplifier);
+            }
         }
     }
 

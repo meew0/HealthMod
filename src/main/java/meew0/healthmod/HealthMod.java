@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import meew0.healthmod.client.GuiSymptomOverlay;
 import meew0.healthmod.items.ItemThermometer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +50,7 @@ public class HealthMod
 
         MinecraftForge.EVENT_BUS.register(new GuiSymptomOverlay());
 
-        thermometer = new ItemThermometer().setUnlocalizedName("thermometer");
+        thermometer = new ItemThermometer().setUnlocalizedName("thermometer").setCreativeTab(CreativeTabs.tabAllSearch);
         GameRegistry.registerItem(thermometer, "thermometer");
     }
 }

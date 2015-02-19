@@ -94,13 +94,14 @@ public class ItemThermometer extends Item {
         String temperature = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.formatting" +
                 temperatureRange).replace("%n", "" + temp).replace("%u", unitAbbr);
 
-        String message = StatCollector.translateToLocal("healthmod.msg.bodyTemperature").replace("%n", temperature);
+        String message = StatCollector.translateToLocal("healthmod.msg.bodyTemperature").replace("%t", temperature);
 
         return new ChatComponentText(message);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List information, boolean advancedTooltips) {
+        if(stack == null || stack.stackTagCompound == null) return;
         float degradation = stack.stackTagCompound.getFloat("Degradation");
         int roundedDegradation = (int) Math.floor(degradation);
         String formattedDegradation = StatCollector.translateToLocal("healthmod.degradation." + roundedDegradation);
@@ -131,8 +132,7 @@ public class ItemThermometer extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-                             int side, float dx, float dy, float dz) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if(player.isSneaking()) {
             // Cycle through units
             int currentUnit = stack.stackTagCompound.getInteger("PreferredUnit");
@@ -147,7 +147,7 @@ public class ItemThermometer extends Item {
             String msg = StatCollector.translateToLocal("healthmod.msg.bodyTemperature.unitSwitched")
                     .replace("%u", newUnitFull).replace("%a", newUnitAbbr);
 
-            player.addChatComponentMessage(new ChatComponentText(msg));
+            if(!world.isRemote) player.addChatComponentMessage(new ChatComponentText(msg));
         } else {
             // Degrade
             float oldDegradation = stack.stackTagCompound.getFloat("Degradation");
@@ -170,17 +170,25 @@ public class ItemThermometer extends Item {
             float convertedTemperature = conversionFuncs.get(preferredUnit).apply(modifiedTemperature);
 
             // Output to chat
-            player.addChatComponentMessage(formatBodyTemperature(round2d(convertedTemperature),
+            if(!world.isRemote) player.addChatComponentMessage(formatBodyTemperature(round2d(convertedTemperature),
                     round2d(modifiedTemperature), preferredUnit));
         }
-        return true;
+        return stack;
+    }
+
+    private ItemStack makeThermometerStack(Item item, int damage) {
+        ItemStack stack = new ItemStack(item, 1, damage);
+        stack.stackTagCompound = new NBTTagCompound();
+        stack.stackTagCompound.setFloat("Degradation", 0.f);
+        stack.stackTagCompound.setInteger("PreferredUnit", 0);
+        return stack;
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
+        list.add(makeThermometerStack(item, 0));
+        list.add(makeThermometerStack(item, 1));
+        list.add(makeThermometerStack(item, 2));
     }
 
     @Override
